@@ -25,7 +25,7 @@ declare global {
                     imageURL?: string | PuterChatOptions,
                     testMode?: boolean,
                     options?: PuterChatOptions
-                ) => Promise<Object>;
+                ) => Promise<AIResponse | undefined>;
                 img2txt: (
                     image: string | File | Blob,
                     testMode?: boolean
@@ -329,12 +329,13 @@ export const usePuterStore = create<PuterStore>((set, get) => {
 
     const feedback = async (path: string, message: string) => {
         const puter = getPuter();
+
         if (!puter) {
             setError("Puter.js not available");
             return;
         }
 
-        return puter.ai.chat(
+        const response = (await puter.ai.chat(
             [
                 {
                     role: "user",
@@ -350,8 +351,14 @@ export const usePuterStore = create<PuterStore>((set, get) => {
                     ],
                 },
             ],
-            { model: "claude-sonnet-4" }
-        ) as Promise<AIResponse | undefined>;
+            {
+                model: "mistralai/mistral-large-2512",
+            }
+        )) as AIResponse | undefined;
+
+        console.log("Feedback response:", response);
+
+        return response;
     };
 
     const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
