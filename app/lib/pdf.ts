@@ -1,16 +1,27 @@
-import * as pdfjsLib from "pdfjs-dist";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
+let pdfjsLib: any = null;
+let loadPromise: Promise<any> | null = null;
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-    new URL(
-        "pdfjs-dist/build/pdf.worker.min.mjs",
-        import.meta.url
-    ).toString();
+async function loadPdfJs(): Promise<any> {
+    if (pdfjsLib) return pdfjsLib;
+    if (loadPromise) return loadPromise;
+
+    loadPromise = import("pdfjs-dist").then((lib) => {
+        lib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+        pdfjsLib = lib;
+        return lib;
+    });
+
+    return loadPromise;
+}
 
 export const extractPdfText = async (file: File) => {
+    const lib = await loadPdfJs();
+
     const buffer = await file.arrayBuffer();
 
-    const pdf = await pdfjsLib.getDocument({
+    const pdf = await lib.getDocument({
         data: buffer,
     }).promise;
 
