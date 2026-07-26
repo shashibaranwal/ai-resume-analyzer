@@ -59,12 +59,18 @@ const Resume = () => {
 
     return (
         <main className="pt-0!">
-            <nav className="resume-nav">
+            {/* Sticky + z-20 so the nav is never painted over by the sticky
+                resume panel below it, which is a positioned sibling. */}
+            <nav className="resume-nav sticky top-0 z-20 bg-white">
                 <Link to="/" className="back-button">
                     <img src="/icons/back.svg" alt="back" className="w-2.5 h-2.5" />
                     <span className="text-gray-800 text-sm font-semibold">
-            Back to Homepage
-          </span>
+                        Back to Homepage
+                    </span>
+                </Link>
+
+                <Link to="/upload" className="primary-button w-fit px-4">
+                    Analyze another resume
                 </Link>
             </nav>
 
