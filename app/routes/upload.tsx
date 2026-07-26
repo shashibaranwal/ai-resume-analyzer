@@ -4,7 +4,7 @@ import FileUploader from "~/components/FileUploader";
 import { usePuterStore } from '~/lib/puter';
 import { useNavigate } from 'react-router';
 import { convertPdfToImage } from '~/lib/pdf2img';
-import { generateUUID } from '~/lib/utils';
+import { generateUUID, parseFeedback } from '~/lib/utils';
 import { prepareInstructions } from '../../constants';
 import { extractPdfText } from "../lib/pdf";
 
@@ -44,17 +44,24 @@ const Upload = () => {
 
         const uuid = generateUUID();
 
-        const data = {
+        const data: {
+            id: string;
+            resumePath: string;
+            imagePath: string;
+            companyName: string;
+            jobTitle: string;
+            jobDescription: string;
+            feedback: Feedback | null;
+        } = {
             id: uuid,
             resumePath: uploadedFile.path,
             imagePath: uploadedImage.path,
             companyName,
             jobTitle,
             jobDescription,
-            feedback: '',
-
+            feedback: null,
         }
-        await kv.set(`resume: ${uuid}`, JSON.stringify(data));
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
         setStatusText("Analyzing...");
 
@@ -78,13 +85,17 @@ const Upload = () => {
 
         const feedbackText = typeof feedback.message.content === 'string' ? feedback.message.content : feedback.message.content[0].text;
 
-        data.feedback = JSON.parse(feedbackText);
-        await kv.set(`resume: ${uuid}`, JSON.stringify(data));
-        setStatusText("Analysis complete!");
+        try {
+            data.feedback = parseFeedback(feedbackText);
+        } catch (err) {
+            console.error("Could not parse AI feedback:", err, feedbackText);
+            return setStatusText("Error: The analysis came back in an unexpected format.");
+        }
 
-        console.log(data);
-        // navigate(`/results/${uuid}`);
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
+        setStatusText("Analysis complete! Redirecting...");
 
+        navigate(`/resume/${uuid}`);
     }
 
 
