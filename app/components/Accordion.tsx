@@ -89,14 +89,14 @@ export const AccordionHeader = ({
             onClick={() => toggleItem(itemId)}
             aria-expanded={isActive}
             className={cn(
-                "w-full px-4 py-3 text-left flex items-center justify-between cursor-pointer transition-colors hover:bg-gray-50 rounded-2xl",
+                "w-full px-4 py-3.5 text-left flex items-center justify-between cursor-pointer transition-colors hover:bg-canvas rounded-xl",
                 className
             )}
         >
             <div className="flex items-center gap-3 w-full">{children}</div>
             <svg
                 className={cn(
-                    "w-5 h-5 shrink-0 transition-transform duration-200",
+                    "w-4 h-4 shrink-0 text-ink-400 transition-transform duration-200",
                     isActive ? "rotate-180" : ""
                 )}
                 fill="none"
@@ -128,7 +128,7 @@ export const AccordionContent = ({
     if (!isItemActive(itemId)) return null;
 
     return (
-        <div className={cn("px-4 py-3 animate-in fade-in duration-200", className)}>
+        <div className={cn("px-4 pb-4 pt-1 animate-in fade-in duration-200", className)}>
             {children}
         </div>
     );

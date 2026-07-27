@@ -61,28 +61,26 @@ const Resume = () => {
         <main className="pt-0!">
             {/* Sticky + z-20 so the nav is never painted over by the sticky
                 resume panel below it, which is a positioned sibling. */}
-            <nav className="resume-nav sticky top-0 z-20 bg-white">
+            <nav className="resume-nav sticky top-0 z-20 bg-surface/80 backdrop-blur-md">
                 <Link to="/" className="back-button">
-                    <img src="/icons/back.svg" alt="back" className="w-2.5 h-2.5" />
-                    <span className="text-gray-800 text-sm font-semibold">
-                        Back to Homepage
-                    </span>
+                    <img src="/icons/back.svg" alt="" className="w-2.5 h-2.5" />
+                    <span className="text-sm font-medium">Back to homepage</span>
                 </Link>
 
-                <Link to="/upload" className="primary-button w-fit px-4">
+                <Link to="/upload" className="primary-button w-fit">
                     Analyze another resume
                 </Link>
             </nav>
 
             <div className="flex flex-row w-full max-lg:flex-col-reverse">
-                <section className="w-1/2 max-lg:w-full bg-[url('/images/bg-small.svg')] bg-cover h-screen sticky top-0 items-center justify-center flex max-lg:h-auto max-lg:py-10">
+                <section className="w-1/2 max-lg:w-full bg-canvas border-r border-line max-lg:border-r-0 max-lg:border-t h-screen sticky top-0 items-center justify-center flex max-lg:h-auto p-10">
                     {imageUrl && resumeUrl && (
-                        <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-wxl:h-fit w-fit">
+                        <div className="animate-in fade-in duration-700 gradient-border max-h-full w-fit shadow-[0_12px_40px_-16px_rgba(15,23,42,0.2)]">
                             <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
                                 <img
                                     src={imageUrl}
                                     alt="resume"
-                                    className="w-full h-full object-contain rounded-2xl"
+                                    className="max-h-[75vh] w-auto object-contain rounded-xl"
                                     title="Open the original PDF"
                                 />
                             </a>
@@ -93,13 +91,14 @@ const Resume = () => {
                 <section className="feedback-section items-center">
                     {/* Inner wrapper keeps the feedback centred in its half of the page
                         instead of hugging the left edge on wide screens. */}
-                    <div className="w-full max-w-3xl flex flex-col gap-8">
-                        <h2 className="text-4xl text-black! font-bold text-center">
-                            Resume Review
-                        </h2>
+                    <div className="w-full max-w-2xl flex flex-col gap-6">
+                        <div className="flex flex-col gap-1">
+                            <h1 className="text-3xl!">Resume review</h1>
+                            <h2>A breakdown of how your resume performs.</h2>
+                        </div>
 
                         {feedback ? (
-                            <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
+                            <div className="flex flex-col gap-6 animate-in fade-in duration-700">
                                 <Summary feedback={feedback} />
                                 <ATS
                                     score={feedback.ATS.score}
@@ -108,16 +107,22 @@ const Resume = () => {
                                 <Details feedback={feedback} />
                             </div>
                         ) : notFound ? (
-                            <div className="flex flex-col items-center gap-4">
-                                <h3 className="text-xl text-dark-200">
+                            <div className="card flex flex-col items-center gap-4 px-6 py-16 text-center">
+                                <p className="text-base font-medium text-ink-900">
                                     We couldn't find that resume.
-                                </h3>
-                                <Link to="/upload" className="primary-button w-fit px-6">
+                                </p>
+                                <Link to="/upload" className="primary-button w-fit">
                                     Analyze a resume
                                 </Link>
                             </div>
                         ) : (
-                            <img src="/images/resume-scan-2.gif" className="w-full" alt="loading" />
+                            <div className="card flex items-center justify-center px-6 py-16">
+                                <img
+                                    src="/images/resume-scan-2.gif"
+                                    className="w-40 opacity-90"
+                                    alt="loading"
+                                />
+                            </div>
                         )}
                     </div>
                 </section>

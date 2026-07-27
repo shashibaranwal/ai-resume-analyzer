@@ -117,42 +117,58 @@ const Upload = () => {
     }
 
     return (
-        <main className="bg-[url('/images/bg-main.svg')] bg-cover">
+        <main>
             <Navbar/>
 
-            <section className="main-section">
-                <div className="page-heading py-4 w-full">
+            <section className="main-section max-w-2xl!">
+                <div className="page-heading">
                     <h1>Smart feedback for your dream job</h1>
-                    {isProcessing ? (
-                        <>
-                            <h2>{statusText}</h2>
-                            <img src="/images/resume-scan.gif" alt="resume scan" className="w-1/2"/>
-                        </>
-                    ) : (
-                        <h2>Drop your resume for an ATS and improvement tips.</h2>
-                    )}
-                    {!isProcessing && (
-                        <form id="upload-form" onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white rounded-lg shadow-md p-4">
-                            <div className="form-div">
-                                <label htmlFor="company-name">Company Name:</label>
-                                <input type="text" name="company-name" placeholder="Company Name" id="company-name"/>
-                            </div>
-                            <div className="form-div">
-                                <label htmlFor="job-title">Job Title:</label>
-                                <input type="text" name="job-title" placeholder="Company Name" id="company-name"/>
-                            </div>
-                            <div className="form-div">
-                                <label htmlFor="job-description">Job Description:</label>
-                                <textarea name="job-description" rows={5}></textarea>
-                            </div>
-                            <div className="form-div">
-                                <label htmlFor="uploader">Upload Resume:</label>
-                                <FileUploader onFileSelect={handleFileSelect} />
-                            </div>
-                            <button type="submit" className="primary-button">Analyze Resume</button>
-                        </form>
-                    )}
+                    <h2>
+                        {isProcessing
+                            ? statusText
+                            : "Drop your resume in for an ATS score and improvement tips."}
+                    </h2>
                 </div>
+
+                {isProcessing ? (
+                    <div className="card w-full flex flex-col items-center gap-4 px-6 py-14">
+                        <img
+                            src="/images/resume-scan.gif"
+                            alt="resume scan"
+                            className="w-40 opacity-90"
+                        />
+                        <p className="text-sm text-ink-500">{statusText}</p>
+                    </div>
+                ) : (
+                    <form
+                        id="upload-form"
+                        onSubmit={handleSubmit}
+                        className="card w-full flex flex-col gap-6 p-6"
+                    >
+                        <div className="form-div">
+                            <label htmlFor="company-name">Company name</label>
+                            <input type="text" name="company-name" placeholder="e.g. Acme Inc." id="company-name"/>
+                        </div>
+                        <div className="form-div">
+                            <label htmlFor="job-title">Job title</label>
+                            <input type="text" name="job-title" placeholder="e.g. Frontend Engineer" id="job-title"/>
+                        </div>
+                        <div className="form-div">
+                            <label htmlFor="job-description">Job description</label>
+                            <textarea
+                                name="job-description"
+                                id="job-description"
+                                rows={5}
+                                placeholder="Paste the job description here…"
+                            ></textarea>
+                        </div>
+                        <div className="form-div">
+                            <label htmlFor="uploader">Resume</label>
+                            <FileUploader onFileSelect={handleFileSelect} />
+                        </div>
+                        <button type="submit" className="primary-button">Analyze Resume</button>
+                    </form>
+                )}
             </section>
         </main>
     );

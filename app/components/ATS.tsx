@@ -5,13 +5,6 @@ const ATS = ({
     score: number;
     suggestions: { type: "good" | "improve"; tip: string }[];
 }) => {
-    const gradient =
-        score > 69
-            ? "from-green-100"
-            : score > 49
-                ? "from-yellow-100"
-                : "from-red-100";
-
     const icon =
         score > 69
             ? "/icons/ats-good.svg"
@@ -26,26 +19,36 @@ const ATS = ({
                 ? "Good Start"
                 : "Needs Improvement";
 
-    return (
-        <div
-            className={`bg-gradient-to-b ${gradient} to-white rounded-2xl shadow-md w-full p-6 flex flex-col gap-4`}
-        >
-            <div className="flex flex-row gap-4 items-center">
-                <img src={icon} alt="ATS score" className="w-10 h-10" />
-                <p className="text-2xl font-semibold">ATS Score - {score}/100</p>
-            </div>
+    const scoreColor =
+        score > 69
+            ? "text-badge-green-text"
+            : score > 49
+                ? "text-badge-yellow-text"
+                : "text-badge-red-text";
 
-            <div className="flex flex-col gap-2">
-                <p className="font-medium text-xl">{subtitle}</p>
-                <p className="text-gray-500">
-                    This score represents how well your resume is likely to perform in
-                    Applicant Tracking Systems used by recruiters.
+    return (
+        <div className="card w-full p-6 flex flex-col gap-5">
+            <div className="flex flex-row gap-3 items-center justify-between">
+                <div className="flex flex-row gap-3 items-center">
+                    <img src={icon} alt="" className="w-8 h-8" />
+                    <div className="flex flex-col">
+                        <p className="text-base font-semibold text-ink-900">ATS Score</p>
+                        <p className="text-sm text-ink-500">{subtitle}</p>
+                    </div>
+                </div>
+                <p className="text-sm text-ink-400 tabular-nums">
+                    <span className={`text-2xl font-semibold ${scoreColor}`}>{score}</span>/100
                 </p>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <p className="text-sm text-ink-500 leading-relaxed">
+                This score represents how well your resume is likely to perform in
+                Applicant Tracking Systems used by recruiters.
+            </p>
+
+            <div className="flex flex-col gap-2.5 border-t border-line pt-5">
                 {suggestions.map((suggestion, index) => (
-                    <div className="flex flex-row gap-2 items-start" key={index}>
+                    <div className="flex flex-row gap-2.5 items-start" key={index}>
                         <img
                             src={
                                 suggestion.type === "good"
@@ -53,22 +56,14 @@ const ATS = ({
                                     : "/icons/warning.svg"
                             }
                             alt={suggestion.type === "good" ? "good" : "improve"}
-                            className="w-5 h-5 mt-1"
+                            className="w-4 h-4 mt-0.5 shrink-0"
                         />
-                        <p
-                            className={
-                                suggestion.type === "good" ? "text-green-700" : "text-amber-700"
-                            }
-                        >
+                        <p className="text-sm text-ink-500 leading-relaxed">
                             {suggestion.tip}
                         </p>
                     </div>
                 ))}
             </div>
-
-            <p className="text-gray-500 italic">
-                Keep refining your resume to improve your chances of landing an interview.
-            </p>
         </div>
     );
 };

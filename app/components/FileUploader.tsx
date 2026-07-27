@@ -1,6 +1,6 @@
 import {useState, useCallback} from "react";
 import {useDropzone} from "react-dropzone";
-import {formatSize} from "~/lib/utils";
+import {cn, formatSize} from "~/lib/utils";
 
 
 interface FileUploaderProps {
@@ -29,53 +29,49 @@ const FileUploader =({onFileSelect}: FileUploaderProps) => {
         onFileSelect?.(null);
     }
 
-    return (
-        <div className="w-full gradient-border">
-            <div {...getRootProps()}>
-                <input {...getInputProps()} />
-
-                <div className="space-y-4 cursor-pointer">
-
-                    { file ? (
-                        <div className="uploader-selected-file" onClick={(e) => e.stopPropagation()}>
-                            <img src="/images/pdf.png" alt="pdf" className="size-10" />
-                            <div className="flex items-center space-x-3">
-                                <div>
-                                    <p className="text-sm text-gray-700 font-medium truncate max-w-xs">
-                                        {file.name}
-                                    </p>
-                                    <p className="text-sm text-gray-500">
-                                        {formatSize(file.size)}
-                                    </p>
-                                </div>
-                            </div>
-                            <button
-                                className="p-2 cursor-pointer"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleRemove();
-                                }}
-                            >
-                                <img src="/icons/cross.svg" alt="remove" className="size-4" />
-                            </button>
-                        </div>
-                    ) : (
-                        <div>
-                            <div className=" mx-auto flex items-center justify-center h-16 p-2">
-                                <img src="/icons/info.svg" alt="upload" className="size-12" />
-                            </div>
-                            <p className="text-lg text-gray-500">
-                                <span className="font-semibold">
-                                    click to upload
-                                </span> or drag and drop
-                            </p>
-                            <p className="text-lg text-gray-500">PDF (max 20 MB)</p>
-                        </div>
-                    )
-
-                    }
-
+    if (file) {
+        return (
+            <div className="w-full uploader-selected-file border border-line">
+                <img src="/images/pdf.png" alt="pdf" className="size-9 shrink-0" />
+                <div className="flex-1 min-w-0">
+                    <p className="text-sm text-ink-900 font-medium truncate">
+                        {file.name}
+                    </p>
+                    <p className="text-xs text-ink-500">
+                        {formatSize(file.size)}
+                    </p>
                 </div>
+                <button
+                    type="button"
+                    aria-label="Remove file"
+                    className="p-2 rounded-lg cursor-pointer transition-colors hover:bg-line"
+                    onClick={handleRemove}
+                >
+                    <img src="/icons/cross.svg" alt="" className="size-3.5" />
+                </button>
+            </div>
+        )
+    }
+
+    return (
+        <div
+            {...getRootProps()}
+            className={cn(
+                "w-full rounded-xl border border-dashed px-6 py-10 text-center cursor-pointer transition-colors",
+                isDragActive
+                    ? "border-accent bg-accent-soft"
+                    : "border-line bg-white hover:border-accent/50 hover:bg-canvas"
+            )}
+        >
+            <input {...getInputProps()} />
+
+            <div className="flex flex-col items-center gap-1">
+                <img src="/icons/info.svg" alt="" className="size-8 opacity-40 mb-2" />
+                <p className="text-sm text-ink-900">
+                    <span className="font-medium text-accent">Click to upload</span>
+                    {" "}or drag and drop
+                </p>
+                <p className="text-xs text-ink-400">PDF, up to 20 MB</p>
             </div>
         </div>
     )

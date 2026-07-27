@@ -1,9 +1,7 @@
 import type { Route } from "./+types/home";
 import Navbar from "../components/Navbar";
-import {resumes} from "../../constants";
-import ResumeCard from "~/components/ResumeCard";
 import {usePuterStore} from "~/lib/puter";
-import {useNavigate} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {useEffect} from "react";
 
 export function meta({}: Route.MetaArgs) {
@@ -23,28 +21,18 @@ export default function Home() {
     if(!isLoading && !auth.isAuthenticated) navigate( '/auth?next=/');
   }, [isLoading, auth.isAuthenticated])
 
-  return <main className="bg-[url('/images/bg-main.svg')] bg-cover">
+  return <main>
     <Navbar/>
 
-    <section className="main-section">
-      <div className="page-heading py-10">
-        <h1>Track Your Applications <br/>& Resume Ratings</h1>
-        <h2>Review your submissions and chack AI-powered feedback.</h2>
+    <section className="hero-section">
+      <div className="page-heading">
+        <h1>Track your applications<br/>& resume ratings</h1>
+        <h2>Upload your resume to get an ATS score and AI-powered feedback.</h2>
+
+        <Link to="/upload" className="primary-button button-lg w-fit mt-2">
+          Upload Resume
+        </Link>
       </div>
-
-      {
-          resumes.length > 0 && (
-              <div className="resumes-section">
-                {
-                  resumes.map( (resume) => (
-                      <ResumeCard key={resume.id} resume={resume} />
-                  ))
-                }
-              </div>
-          )
-      }
     </section>
-
-
   </main>
 }

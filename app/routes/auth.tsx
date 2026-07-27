@@ -18,24 +18,27 @@ export const Auth = () => {
     }, [auth.isAuthenticated, next])
 
     return (
-        <main className="bg-[url('/images/bg-main.svg')] bg-cover min-h-screen flex items-center justify-center">
-            <section className="flex flex-col gap-8 rounded-2xl bg-white p-10 shadow-olive-100">
-                <div className="flex flex-col gap-2 items-center">
-                    <h1>Welcome</h1>
-                    <h2>Login to Continue Your Job Journey</h2>
+        <main className="min-h-screen flex items-center justify-center px-6">
+            <section className="card w-full max-w-sm flex flex-col gap-8 p-8 animate-in fade-in duration-300">
+                <div className="flex flex-col gap-2 items-center text-center">
+                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent text-white text-base font-semibold mb-2">
+                        R
+                    </span>
+                    <h1 className="text-2xl!">Welcome back</h1>
+                    <h2 className="text-sm!">Sign in to continue your job journey.</h2>
                 </div>
 
-                <div>
+                <div className="w-full">
                     { isLoading ? (
-                            <button className="auth-button animate-pulse">
-                                <p>Signing you in ...</p>
+                            <button className="auth-button animate-pulse" disabled>
+                                Signing you in…
                             </button>
                         ) : (
                             <>
                                 { auth.isAuthenticated ? (
-                                    <button className="auth-button" onClick={auth.signOut}><p>Sign Out</p></button>
+                                    <button className="auth-button" onClick={auth.signOut}>Sign Out</button>
                                 ) : (
-                                    <button className="auth-button" onClick={auth.signIn}><p>Sign In</p></button>
+                                    <button className="auth-button" onClick={auth.signIn}>Sign In</button>
                                 )}
                             </>
                         )

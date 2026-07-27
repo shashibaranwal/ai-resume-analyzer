@@ -7,9 +7,7 @@ const ScoreBadge = ({ score }: { score: number }) => {
                 : { label: "Needs Work", className: "bg-badge-red text-badge-red-text" };
 
     return (
-        <div className={`score-badge ${className}`}>
-            <p className="text-sm font-medium">{label}</p>
-        </div>
+        <span className={`score-badge ${className}`}>{label}</span>
     );
 };
 

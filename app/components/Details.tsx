@@ -14,52 +14,44 @@ type Tip = {
 };
 
 const CategoryHeader = ({ title, score }: { title: string; score: number }) => (
-    <div className="flex flex-row gap-4 items-center py-2">
-        <p className="text-2xl font-semibold">{title}</p>
+    <div className="flex flex-row gap-3 items-center">
+        <p className="text-sm font-semibold text-ink-900">{title}</p>
         <ScoreBadge score={score} />
     </div>
 );
 
 const CategoryContent = ({ tips }: { tips: Tip[] }) => (
-    <div className="flex flex-col gap-4 items-center w-full">
-        <div className="bg-gray-50 w-full rounded-2xl px-5 py-4 grid grid-cols-2 gap-4 max-md:grid-cols-1">
-            {tips.map((tip, index) => (
-                <div className="flex flex-row gap-2 items-center" key={index}>
+    <div className="flex flex-col gap-3 w-full">
+        {tips.map((tip, index) => (
+            <div
+                key={index}
+                className={cn(
+                    "flex flex-col gap-1.5 rounded-xl p-4 border",
+                    tip.type === "good"
+                        ? "bg-badge-green border-emerald-100"
+                        : "bg-badge-yellow border-amber-100"
+                )}
+            >
+                <div className="flex flex-row gap-2 items-center">
                     <img
                         src={tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"}
                         alt={tip.type === "good" ? "good" : "improve"}
-                        className="w-5 h-5"
+                        className="w-4 h-4 shrink-0"
                     />
-                    <p className="text-xl text-gray-500">{tip.tip}</p>
+                    <p
+                        className={cn(
+                            "text-sm font-semibold",
+                            tip.type === "good"
+                                ? "text-badge-green-text"
+                                : "text-badge-yellow-text"
+                        )}
+                    >
+                        {tip.tip}
+                    </p>
                 </div>
-            ))}
-        </div>
-
-        <div className="flex flex-col gap-4 w-full">
-            {tips.map((tip, index) => (
-                <div
-                    key={index}
-                    className={cn(
-                        "flex flex-col gap-2 rounded-2xl p-4",
-                        tip.type === "good"
-                            ? "bg-green-50 border border-green-200 text-green-700"
-                            : "bg-yellow-50 border border-yellow-200 text-yellow-700"
-                    )}
-                >
-                    <div className="flex flex-row gap-2 items-center">
-                        <img
-                            src={
-                                tip.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"
-                            }
-                            alt={tip.type === "good" ? "good" : "improve"}
-                            className="w-5 h-5"
-                        />
-                        <p className="text-xl font-semibold">{tip.tip}</p>
-                    </div>
-                    <p>{tip.explanation}</p>
-                </div>
-            ))}
-        </div>
+                <p className="text-sm text-ink-500 leading-relaxed">{tip.explanation}</p>
+            </div>
+        ))}
     </div>
 );
 
@@ -72,7 +64,7 @@ const Details = ({ feedback }: { feedback: Feedback }) => {
     ];
 
     return (
-        <div className="flex flex-col gap-4 w-full">
+        <div className="card w-full p-2">
             <Accordion>
                 {sections.map((section) => (
                     <AccordionItem key={section.id}>

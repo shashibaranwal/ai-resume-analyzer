@@ -3,17 +3,17 @@ import ScoreBadge from "~/components/ScoreBadge";
 
 const Category = ({ title, score }: { title: string; score: number }) => {
     const textColor =
-        score > 69 ? "text-green-600" : score > 49 ? "text-yellow-600" : "text-red-600";
+        score > 69 ? "text-badge-green-text" : score > 49 ? "text-badge-yellow-text" : "text-badge-red-text";
 
     return (
         <div className="resume-summary">
             <div className="category">
-                <div className="flex flex-row gap-2 items-center justify-center">
-                    <p className="text-2xl">{title}</p>
+                <div className="flex flex-row gap-2.5 items-center">
+                    <p className="text-sm font-medium text-ink-900">{title}</p>
                     <ScoreBadge score={score} />
                 </div>
-                <p className="text-2xl">
-                    <span className={textColor}>{score}</span>/100
+                <p className="text-sm text-ink-400 tabular-nums">
+                    <span className={`text-base font-semibold ${textColor}`}>{score}</span>/100
                 </p>
             </div>
         </div>
@@ -22,13 +22,13 @@ const Category = ({ title, score }: { title: string; score: number }) => {
 
 const Summary = ({ feedback }: { feedback: Feedback }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-md w-full">
-            <div className="flex flex-col items-center justify-center p-4 gap-2 text-center">
+        <div className="card w-full">
+            <div className="flex flex-col items-center justify-center px-5 pt-8 pb-6 gap-1 text-center">
                 <ScoreGauge score={feedback.overallScore} />
 
-                <h2 className="text-2xl font-bold">Your Resume Score</h2>
-                <p className="text-sm text-gray-500">
-                    This score is calculated based on the variables listed below.
+                <h3 className="text-lg font-semibold text-ink-900 mt-2">Your Resume Score</h3>
+                <p className="text-sm text-ink-500 max-w-xs">
+                    Calculated from the categories listed below.
                 </p>
             </div>
 
