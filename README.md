@@ -1,5 +1,7 @@
 # AI Resume Analyzer
 
+**Live App:** [https://aicvlizer.vercel.app/upload](https://aicvlizer.vercel.app/upload)
+
 Upload a resume, paste the job you're targeting, and get a scored ATS review back — an overall
 score, an ATS compatibility rating, and specific, explained tips across tone, content, structure,
 and skills.
